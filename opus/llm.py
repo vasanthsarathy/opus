@@ -14,7 +14,7 @@ def initialize_llm(ctx):
 
     if ctx['local']:
         if 'model' in ctx:
-            llm = Ollama(model=ctx['model'])
+            llm = Ollama(model=ctx['model'],temperature=0.1)
         else:
             llm = Ollama("llama2")
     else:

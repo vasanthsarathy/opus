@@ -84,7 +84,7 @@ Remember, return as a python list of strings.
 
 sentence: \n{utterance}\n 
 central referent: \n{centralref}\n
-supporting referents (noun(s) from utterance):
+supporting referents (noun(s) from utterance as a python list):
 """
 
 prompt_suppref = PromptTemplate(
