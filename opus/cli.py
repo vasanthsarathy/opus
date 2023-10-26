@@ -2,7 +2,7 @@ import os
 import click
 import json
 import random
-from opus.pipelines import parse
+from opus.agent import Agent
 
 # Shared click options
 shared_options = [
@@ -35,13 +35,14 @@ def run(ctx, **kwargs):
     ctx.obj.update(kwargs)
     done = False
     click.secho("\nType in your utterance and OPUS will parse it. Type '\\bye' to quit. \n")
+    opus_agent = Agent(ctx.obj)
     while not done:
-        utterance = input("\nUtterance: ")
+        utterance = input("\n>> ")
         if utterance == "\\bye":
             done = True
         else:
-            parsed = parse(utterance)
-            click.secho(f"\nParse:\n{parsed}")
+            parsed = opus_agent.parse(utterance)
+            print(f"\n{json.dumps(parsed, indent=2)}\n")
 
 
 cli.add_command(run)
