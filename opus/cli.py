@@ -30,6 +30,8 @@ def cli(ctx, **kwargs):
 
 @click.command()
 @add_options(shared_options)
+@click.option('--local/--no-local', '-v', default=False, help="If set, then model is loaded from a local Ollama server")
+@click.option('--model', '-m', default="llama2", help="choose an Ollama model")
 @click.pass_context
 def run(ctx, **kwargs):
     ctx.obj.update(kwargs)

@@ -80,6 +80,8 @@ Remember, the supporting referents are things or objects, not actions or descrip
 
 Do NOT include objects or collections that have already been covered in the central referent. 
 
+Remember, return as a python list of strings.
+
 sentence: \n{utterance}\n 
 central referent: \n{centralref}\n
 supporting referents (noun(s) from utterance):

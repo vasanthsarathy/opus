@@ -1,5 +1,6 @@
 # All code relating to our core LLM infrastructure
 from yaspin import yaspin
+from langchain.llms import Ollama
 
 @yaspin(text="Loading LLM...", color="green")
 def initialize_llm(ctx):
@@ -10,5 +11,12 @@ def initialize_llm(ctx):
 
     # TODO: add ability to specify LLM and params as input
 
-    llm = ChatOpenAI(model_name="gpt-4", temperature=0.0)
+
+    if ctx['local']:
+        if 'model' in ctx:
+            llm = Ollama(model=ctx['model'])
+        else:
+            llm = Ollama("llama2")
+    else:
+        llm = ChatOpenAI(model_name="gpt-4", temperature=0.0)
     return llm

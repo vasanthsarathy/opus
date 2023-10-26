@@ -11,6 +11,7 @@ click = "^8.1.7"
 langchain = "^0.0.323"
 yaspin = "^3.0.1"
 tiktoken = "^0.5.1"
+openai = "^0.28.1"
 
 [tool.poetry.scripts]  
 opus = 'opus.cli:main'

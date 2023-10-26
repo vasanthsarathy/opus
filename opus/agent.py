@@ -26,14 +26,26 @@ class Agent:
         # get speech act or intent
         intent = self._get_intent()
         self.smr['intention']['intent'] = intent
-        
+ 
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
+       
         # get central referent 
         central_ref = self._get_central_ref()
         self.smr['referents'].append(central_ref)
-        
+ 
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
+       
         # get supplemental referents
         supp_refs = self._get_supp_refs()
         self.smr['referents'].extend(supp_refs)
+
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
 
         # let's add some variable names
         for ref in self.smr['referents']:
@@ -44,8 +56,15 @@ class Agent:
         # get CPC
         self.smr['intention']['proposition'] = self._get_cpc()
 
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
         # get SPCs
         self.smr['descriptors'] = self._get_descriptors()
+
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
 
 
         # get cognitive_statuses
@@ -56,6 +75,10 @@ class Agent:
                 status = cognitive_statuses[varname]
                 ref['cognitive_status'] = status
 
+        if self.ctx['verbose']:
+            print("SMR = ", self.smr) 
+
+
 
         # Save parse
         self.history[-1]['parses'].append(self.smr)
@@ -65,8 +88,6 @@ class Agent:
     @yaspin(text="Intent...", color="yellow")
     def _get_intent(self):
         chain_speech_act = LLMChain(llm=self.llm, prompt=prompt_speech_act)
-        if self.ctx['verbose']:
-            print("prompt: ", prompt_speech_act)
         intent = chain_speech_act.run(utterance=self.current_utterance(),
                                         history=self.history[:-1]).lower()
         return intent
@@ -76,8 +97,6 @@ class Agent:
     def _get_central_ref(self):
         chain_centralref = LLMChain(llm=self.llm, prompt=prompt_centralref)
         chain_typeof = LLMChain(llm=self.llm, prompt=prompt_typeof)
-        if self.ctx['verbose']:
-            print("prompt: ", prompt_centralref)
         centralref = chain_centralref.run(utterance=self.current_utterance(),
                                         history=self.history[:-1]).lower()
         centralref_type = chain_typeof.run(ref=centralref, types=self.types, utterance=self.current_utterance()).split(" ")[-1]
