@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "opus"
+version = "0.1.0"
+description = "Open World Parser for Unrestricted Semantics"
+authors = ["Vasanth Sarathy <vasanth.sarathy@tufts.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.7"
+langchain = "^0.0.323"
+yaspin = "^3.0.1"
+tiktoken = "^0.5.1"
+
+[tool.poetry.scripts]  
+opus = 'opus.cli:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
