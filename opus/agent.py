@@ -135,6 +135,8 @@ class Agent:
         cpc = chain_cpc.run(utterance=self.current_utterance(), 
                             speechact=self.smr['intention']['intent'], 
                             centralref=self.central_referent(self.smr))
+        if self.ctx['debug']:
+            print("cpc: ",cpc)
         
         return {"text": cpc.split(":")[0], "type": cpc.split(":")[-1]}
     
@@ -146,6 +148,10 @@ class Agent:
         spc = chain_properties.run(utterance=self.current_utterance(),
                                    referent_info=self.smr['referents'],
                                    cpc=self.smr['intention']['proposition'])
+        if self.ctx['debug']:
+            print("SPC: ", spc)
+            print("referents: ", self.smr['referents'])
+
         descriptors = ast.literal_eval(spc)
         return descriptors
     

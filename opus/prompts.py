@@ -99,21 +99,21 @@ template_cpc = """
 Determine the core propositional content (cpc) of the utterance below in the context of its central referent and speech act type
 To do so, use the following procedure
 
-1. Determine the type of cpc ("action", "concept") associated with the utterance.
-If the speech act is a "want" that means the utterance is an imperative and the cpc is an "action".
-If the speech act is a "wantBel" (note the capital B) that means the utterance is a statement assertion, and the cpc will be a "concept"
-If the speech act is an "itk" that means the utterance contains a question about some concept, so the cpc is a "concept"
+1. Determine the type of cpc (either "action" or "concept") associated with the utterance.
+If the speech act is a "INSTRUCT" that means the utterance is an imperative and the cpc is an "action".
+If the speech act is a "STATEMENT" that means the utterance is a statement assertion, and the cpc will be a "concept"
+If the speech act is an "QUESTION" that means the utterance contains a question about some concept, so the cpc is a "concept"
 
 2. If the type of cpc is an "action", then the core propositional content (or cpc) is the action that is being performed on the central referent.
 If the type of cpc is a "concept", then the core propositional content (or cpc) is a concept that is being associated with the central referent.
 
 3. Convert the cpc into a single representative word that captures its meaning, without any reference to the referents.
 
-4. return the converted cpc and its type in the following format "<CPC>:<TYPE>" 
+4. return the converted cpc and its type in the following format <CPC>:<TYPE> 
 
 utterance: \n{utterance}\n
 speech act: \n{speechact}\n
-central referent: \n{centralref}
+central referent: \n{centralref}\n
 core propositional content and type:
 """
 
@@ -128,15 +128,15 @@ prompt_cpc = PromptTemplate(
 
 template_properties = """
 Determine the properties of the referents. Use the following procedure for each of the referents:
-1. The names of each of the referents itself should be added as a property to the list.
-2. From the utterance, extract all the adjectival descriptors used to describe the properties of the referents, and add to list.
-3. Add to this list, any relations (mentioned in the utterance) between two or more of the referents. Do NOT include any relations that can be reasonably assumed to be already covered by the meaning of the core propositional content. 
+1. The "text" of each of the referents itself MUST be added as a property to the list. For example if it is "the blue mug", then "mug" should be added to the list. Another example "the salt", then "salt" should be added to the list.
+2. From the utterance, extract all the adjectival descriptors used to describe the properties of the referents, and add to list. For example, "pass the blue mug", "blue" should be added to the list.
+3. Add to this list, any relations (mentioned in the utterance) between two or more of the referents. Do NOT include any relations that can be reasonably assumed to be already covered by the meaning of the core propositional content. For example, in "pass the blue mug on the table", "on" should be added to the list. 
 4. Return this list as a list of python dictionaries with the following format:
 "text": <NAME OF PROPERTY/DESCRIPTOR/RELATION -- must be a single word>, "arguments": <LIST OF VARIABLE NAMES that makes sense> 
 
 where the variable names correspond to the variable names associated with each of the referents. Remember, the variable names have to be correct.
 
-Remember, DO NOT include in the list anything that is semantically similar to the core propositional content since it would be redundant
+Remember, DO NOT include in the list the core propositional content since it would be redundant
 
 utterance: \n{utterance}\n
 referents: \n{referent_info}\n
