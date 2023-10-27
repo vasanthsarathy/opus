@@ -32,7 +32,7 @@ def cli(ctx, **kwargs):
 @click.command()
 @add_options(shared_options)
 @click.option('--debug/--no-debug', '-d', default=False, help="If set, then debugging printing happens")
-@click.option('--model', '-m', default="gpt-4", help="specify a model. Run 'opus models' to see available models and their sources.")
+@click.option('--model', '-m', default="gpt-3.5-turbo-16k-0613", help="specify a model. Run 'opus models' to see available models and their sources.")
 @click.option('--source', '-s', default="openai", help="specify a source for your model")
 @click.pass_context
 def run(ctx, **kwargs):
