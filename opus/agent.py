@@ -115,6 +115,10 @@ class Agent:
         chain_typeof = LLMChain(llm=self.llm, prompt=prompt_typeof)
 
         supprefs = chain_suppref.run(utterance=self.current_utterance(), centralref=self.central_referent(self.smr)).lower()
+
+        #clean supprefs
+        supprefs = "["+supprefs.split("[")[1]
+
         supprefs = ast.literal_eval(supprefs)
         
         referents = []
@@ -161,7 +165,11 @@ class Agent:
         chain_cognitive_status = LLMChain(llm=self.llm, prompt=prompt_cognitive_status)
         cognitive_statuses = chain_cognitive_status.run(utterance=self.current_utterance(),
                                                    referent_info=self.smr['referents'])
-        
+       
+        if self.ctx['debug']:
+            print("Cog Status: ",cognitive_statuses)
+
+
         cognitive_statuses = ast.literal_eval(cognitive_statuses)
         
         return cognitive_statuses

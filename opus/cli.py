@@ -31,9 +31,9 @@ def cli(ctx, **kwargs):
 
 @click.command()
 @add_options(shared_options)
-@click.option('--local/--no-local', '-v', default=False, help="If set, then model is loaded from a local Ollama server")
 @click.option('--debug/--no-debug', '-d', default=False, help="If set, then debugging printing happens")
-@click.option('--model', '-m', default="llama2", help="choose an Ollama model")
+@click.option('--model', '-m', default="gpt-4", help="specify a model. Run 'opus models' to see available models and their sources.")
+@click.option('--source', '-s', default="openai", help="specify a source for your model")
 @click.pass_context
 def run(ctx, **kwargs):
     ctx.obj.update(kwargs)
@@ -52,7 +52,32 @@ def run(ctx, **kwargs):
             print(f"\n{json.dumps(parsed, indent=2)}\n")
             click.secho(f"\n⏲️  {elapsed_time} seconds")
 
+@click.command()
+@add_options(shared_options)
+@click.pass_context
+def models(ctx, **kwargs):
+    ctx.obj.update(kwargs)
+    click.secho("\nAvailable Models (use --model option in 'opus run'\n", bold=True)
+    openai = ["gpt-4-0613", "gpt-4-0314", "gpt-4","gpt-3.5-turbo-16k","gpt-3.5-turbo-16k-0613"]
+    anthropic = ["claude-instant-1", "claude-2"]
+    ollama = ["llama-2", "llama-2-uncensored", "opus"]
+
+    click.secho("Source: Openai\n")
+    for m in openai:
+        print(f"\t{m}")
+
+    click.secho("\n Source: Anthropic\n")
+    for m in anthropic:
+        print(f"\t{m}")
+
+    click.secho("\n Source: Ollama (LOCAL)\n")
+    for m in ollama:
+        print(f"\t{m}")
+
+
+
 cli.add_command(run)
+cli.add_command(models)
 
 def main():
     cli(obj={})

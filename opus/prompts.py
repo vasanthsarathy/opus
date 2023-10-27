@@ -82,9 +82,14 @@ Do NOT include objects or collections that have already been covered in the cent
 
 Remember, return as a python list of strings.
 
+EXAMPLE
+sentence: pass the mug on the table
+central referent: mug
+supporting referents (return a python list of strings): ["table"]
+
 sentence: \n{utterance}\n 
 central referent: \n{centralref}\n
-supporting referents (noun(s) from utterance as a python list):
+supporting referents (return a python list of strings):
 """
 
 prompt_suppref = PromptTemplate(
@@ -177,8 +182,7 @@ INDEFINITE | new or hypothetical | a N |
 
 When deciding the one cognitive status for each referent, use the table above and compare the form (pronoun, determiner, article) of the utterance to its status.
 
-Return this as a python dictionary using the following format for the dictionary entry. Note it MUST be a python dictionary
-<VARIABLE NAME> : <COGNITIVE STATUS>
+Return this as a python dictionary using the following format for the dictionary entry. Note it MUST be a python dictionary, where each entry is <VARIABLE NAME>:<COGNITIVE STATUS>
 
 where the variable names correspond to the variable names associated with each of the referents. Remember, the variable names have to be correct.
 
