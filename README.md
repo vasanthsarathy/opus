@@ -14,6 +14,63 @@ Example of a run command
 opus run --model gpt-3.5-turbo-16k-0613 --source openai
 ```
 
+### API
+
+A rest api can be started up with 
+```bash
+opus serve
+```
+
+After that requests can be sent with a json containing ONE required string field called "utterance".
+
+Example: 
+
+```json
+{
+  "utterance": "pass the salt",
+  "history": [],
+  "model": "gpt-3.5-turbo-16k-0613",
+  "source": "openai",
+  "debug": false,
+  "verbose": false
+}
+```
+
+
+Output (parsed) 
+```json
+{
+  "referents": [
+    {
+      "text": "salt",
+      "type": "physobj",
+      "role": "central",
+      "variable_name": "VAR0",
+      "cognitive_status": "DEFINITE"
+    }
+  ],
+  "intention": {
+    "intent": "instruct",
+    "proposition": {
+      "text": "pass",
+      "type": "action",
+      "arguments": [
+        "VAR0"
+      ]
+    }
+  },
+  "descriptors": [
+    {
+      "text": "salt",
+      "arguments": [
+        "VAR0"
+      ]
+    }
+  ]
+}
+```
+
+
 ### Troubleshooting
 
 *On server: Failed to unlock the collection* Error when doing `poetry add`
