@@ -135,7 +135,7 @@ template_properties = """
 Determine the properties of the referents. Use the following procedure for each of the referents:
 1. The "text" of each of the referents itself MUST be added as a property to the list. For example if it is "the blue mug", then "mug" should be added to the list. Another example "the salt", then "salt" should be added to the list.
 2. From the utterance, extract all the adjectival descriptors used to describe the properties of the referents, and add to list. For example, "pass the blue mug", "blue" should be added to the list.
-3. Add to this list, any relations (mentioned in the utterance) between two or more of the referents. Do NOT include any relations that can be reasonably assumed to be already covered by the meaning of the core propositional content. For example, in "pass the blue mug on the table", "on" should be added to the list. 
+3. If there are more than one referent, add to this list, any relations (mentioned in the utterance) between two or more of the referents. Do NOT include any relations that can be reasonably assumed to be already covered by the meaning of the core propositional content. For example, in "pass the blue mug on the table", "on" should be added to the list. 
 4. Return this list as a list of python dictionaries with the following format:
 "text": <NAME OF PROPERTY/DESCRIPTOR/RELATION -- must be a single word>, "arguments": <LIST OF VARIABLE NAMES that makes sense> 
 
@@ -197,5 +197,19 @@ prompt_cognitive_status = PromptTemplate(
     template=template_cognitive_status
 )
 
+# (12) Variable Assignment of CPC
+template_cpc_vars = """
+Determine the arguments for the core propositional content of an utterance, given its current parse. The arguments must be a python list of string variable names (e.g., [VAR0, VAR1]) present in the current parse. It is not necessary that the arguments contain all the variables, just some subset is sufficient if necessary.
 
+The arguments of the core propositional content must make sense in context of the entire parse as well its inherent meaning as an action verb or a concept noun.
 
+utterance: \n{utterance}\n
+core propositional content: \n{cpc}\n 
+current parse: \n{parse}\n
+arguments:
+"""
+
+prompt_cpc_vars = PromptTemplate(
+        input_variables=["utterance", "cpc", "parse"],
+        template=template_cpc_vars
+        )

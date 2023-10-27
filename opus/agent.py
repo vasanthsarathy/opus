@@ -65,8 +65,6 @@ class Agent:
         if self.ctx['verbose']:
             print("SMR = ", self.smr) 
 
-
-
         # get cognitive_statuses
         cognitive_statuses = self._get_cognitive_status()
         for ref in self.smr['referents']:
@@ -79,6 +77,8 @@ class Agent:
             print("SMR = ", self.smr) 
 
 
+        # Get the cpc variables
+        self.smr['intention']['proposition']['arguments'] = self._get_cpc_vars()
 
         # Save parse
         self.history[-1]['parses'].append(self.smr)
@@ -173,6 +173,19 @@ class Agent:
         cognitive_statuses = ast.literal_eval(cognitive_statuses)
         
         return cognitive_statuses
+
+    @yaspin(text="Arguments CPC", color="red")
+    def _get_cpc_vars(self):
+        chain_cpc_vars = LLMChain(llm=self.llm, prompt=prompt_cpc_vars)
+        cpc_vars = chain_cpc_vars.run(utterance=self.current_utterance(), 
+                cpc=self.smr['intention']['proposition']['text'],
+                parse=self.smr)
+
+        if self.ctx['debug']:
+            print("CPC args: ",cpc_vars)
+
+        cpc_vars = ast.literal_eval(cpc_vars)
+        return cpc_vars
         
     #### UTILITY 
 
