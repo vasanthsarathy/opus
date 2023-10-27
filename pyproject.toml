@@ -13,6 +13,8 @@ yaspin = "^3.0.1"
 tiktoken = "^0.5.1"
 openai = "^0.28.1"
 anthropic = "^0.5.0"
+fastapi = "^0.104.0"
+uvicorn = "^0.23.2"
 
 [tool.poetry.scripts]  
 opus = 'opus.cli:main'

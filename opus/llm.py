@@ -20,5 +20,7 @@ def initialize_llm(ctx):
                 raise ValueError("Source you provided does not work with OPUS")
         else:
             raise ValueError("Need to provide a source using --source. For example, you can say 'openai'")
+    else:
+        raise ValueError("I need a model")
 
     return llm

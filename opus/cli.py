@@ -55,6 +55,16 @@ def run(ctx, **kwargs):
 @click.command()
 @add_options(shared_options)
 @click.pass_context
+def serve(ctx, **kwargs):
+    ctx.obj.update(kwargs)
+    from opus.api import serve
+    serve()
+
+
+
+@click.command()
+@add_options(shared_options)
+@click.pass_context
 def models(ctx, **kwargs):
     ctx.obj.update(kwargs)
     click.secho("\nAvailable Models (use --model option in 'opus run'\n", bold=True)
@@ -78,6 +88,7 @@ def models(ctx, **kwargs):
 
 cli.add_command(run)
 cli.add_command(models)
+cli.add_command(serve)
 
 def main():
     cli(obj={})
