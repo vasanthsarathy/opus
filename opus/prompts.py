@@ -30,7 +30,7 @@ prompt_speech_act = PromptTemplate(
 template_centralref = """
 What is the central item (which could be a single thing or a collection of things) that is being referred to in the below sentence (in the context of the chat history)?
 
-Remember, the central referent is a thing or object, not an action or descriptor.It is meant to capture the central real world item being referenced in the utterance. 
+Remember, the central referent is a thing or object, not an action or descriptor, unless you are talking about the action and its properties. It is meant to capture the central real world item (or discourse entity) being referenced in the utterance. 
 
 Return a single word or a short span of text from the sentence.
 

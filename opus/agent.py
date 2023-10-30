@@ -12,7 +12,7 @@ class Agent:
         self.ctx = ctx
         self.history = []
         self.llm = initialize_llm(self.ctx)
-        self.types = ["physobj", "location", "direction", "agent", "concept"]
+        self.types = ["physobj", "location", "direction", "agent", "concept", "action"]
 
     def current_utterance(self):
         return self.history[-1]['value']
