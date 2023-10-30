@@ -47,9 +47,11 @@ def run(ctx, **kwargs):
         else:
             start_time = time.perf_counter()
             parsed = opus_agent.parse(utterance)
+            trade_parse = opus_agent.trade_semantics("brad")
             end_time = time.perf_counter()
             elapsed_time = round(end_time - start_time, 2)
             print(f"\n{json.dumps(parsed, indent=2)}\n")
+            print(trade_parse)
             click.secho(f"\n⏲️  {elapsed_time} seconds")
 
 @click.command()

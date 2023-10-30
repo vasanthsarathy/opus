@@ -195,5 +195,42 @@ class Agent:
     def supp_referents(self, smr):
         return find_all_dicts_in_list(smr['referents'], "role", "supplemental")
 
-
+    def trade_semantics(self, speaker):
+   
+        # Build the CPC
+        if 'text' in self.smr['intention']['proposition']:
+            if "inst" in self.smr['intention']['intent'] or "ques" in self.smr['intention']['intent']:
+                cpc_template = "{cpc_name}(self,{cpc_variables})"
+            else:
+                cpc_template = "{cpc_name}({cpc_variables})"
+            cpc = cpc_template.format(cpc_name=self.smr['intention']['proposition']['text'],
+                                    cpc_variables=",".join(self.smr['intention']['proposition']['arguments']))
+        else:
+            cpc = "NONE"
+        
+                                
+        # Build the SPC
+        spcs = []
+        spc_template = "{spc_name}({spc_variables})"
+        for descriptor in self.smr['descriptors']:
+            spc_predicate = spc_template.format(spc_name=descriptor['text'],
+                                        spc_variables=",".join(descriptor['arguments']))
+            spcs.append(spc_predicate)
+        
+        for ref in self.smr['referents']:
+            if 'variable_name' in ref and 'cognitive_status' in ref:
+                spc_predicate = spc_template.format(spc_name=ref['cognitive_status'],
+                                            spc_variables=ref['variable_name'])
+                spcs.append(spc_predicate)
+                        
+        spc_all = ",".join(spcs)                        
+                                
+        
+        final_template = "{speech_act}({speaker},self,{cpc},{{{spcs}}})"
+        trade_parse = final_template.format(speech_act=self.smr['intention']['intent'],
+                                    speaker=speaker,
+                                    cpc=cpc,
+                                    spcs=spc_all)
+        
+        return trade_parse
 
