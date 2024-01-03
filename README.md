@@ -1,5 +1,6 @@
-# opus
-Open world parser with unrestricted semantics
+# OPUS
+Open world parser with unrestricted semantics.
+
 
 ### Useful commands
 
@@ -69,13 +70,19 @@ Output (parsed)
   ]
 }
 ```
+### Magnum Opus
+This is the data annotation tool. The source code for this tool is found in the `magnum` folder. It is built on a `reflex.dev` pure-python web framework.
+
+Run by going in the magnum folder: `$ cd magnum` and then type `reflex run` to start the app server. Click on the link provided and you are good to go.
+
+Please read the "instructions" first on the sidebar menu before annotating anything. 
 
 
 ### Troubleshooting
 
 *On server: Failed to unlock the collection* Error when doing `poetry add`
 
-I needed to add this line to my `.bashrc` and `$source \.bashrc` it to get around the error. 
+I needed to add this line to my `.bashrc` and `$ source \.bashrc` it to get around the error. 
 ```
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 ```
