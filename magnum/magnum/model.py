@@ -6,14 +6,16 @@ class Utterance(BaseModel):
     text: str
     speaker: str
     listener: str
+    dialog: list[str] #dialog history
+    loc: int # index of current utterance in dialog 
 
 class Parse(BaseModel):
     utterance: Utterance
-    parse: Dict["predicate": str, "json": Dict]
-    parse_json: str
+    parse: dict
     parser: str
 
-class ParsedUtterance(Utterance):
-    parses: List[Parse]
+class ParsedUtterance(BaseModel):
+    utterance: Utterance
+    parses: list[Parse]
 
 

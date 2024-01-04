@@ -11,9 +11,20 @@ opus models
 ```
 
 Example of a run command
-```
+
+```bash
 opus run --model gpt-3.5-turbo-16k-0613 --source openai
 ```
+
+Sometimes you need to run a batch of utterances through opus. 
+
+```bash
+opus batch --input FILENAME.txt --speaker evan --listener self
+```
+
+You can also optionally add the `--model` and `--source` options as well.
+
+The script outputs a file in the same dir as the input file and stores it as `FILENAME-parsed.txt`
 
 ### API
 
@@ -90,3 +101,4 @@ export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 ### Todo 
 - [ ] Get arguments for the CPC. (self, VAR0, etc.) 
 - [ ] Figure out how to "constrain" the output of the llama models. Maybe use lmql type constraint guidance.
+- [ ] dialog
