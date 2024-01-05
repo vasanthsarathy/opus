@@ -1,5 +1,5 @@
-# OPUS
-Open world parser with unrestricted semantics.
+# 🐧 OPUS
+Open-world parser with unrestricted semantics.
 
 
 ### Useful commands
@@ -81,7 +81,7 @@ Output (parsed)
   ]
 }
 ```
-### Magnum Opus
+### 🖋️ Magnum Opus
 This is the data annotation tool. The source code for this tool is found in the `magnum` folder. It is built on a `reflex.dev` pure-python web framework.
 
 Run by going in the magnum folder: `$ cd magnum` and then type `reflex run` to start the app server. Click on the link provided and you are good to go.

@@ -1,6 +1,5 @@
 """ This is the data model """
 from pydantic import BaseModel
-from typing import List,Dict
 
 class Utterance(BaseModel):
     text: str

@@ -5,7 +5,7 @@ import json
 import random
 from opus.agent import Agent
 import time
-from magnum.magnum.model import Parse, ParsedUtterance, Utterance
+from opus.model import Parse, ParsedUtterance, Utterance
 
 
 # Shared click options
