@@ -58,7 +58,7 @@ def output_area() -> rx.Component:
 def edit_area() -> rx.Component:
     return rx.card(
     rx.text("Body of the Card Component"),
-    header=rx.heading("Header", size="lg"),
+    header=rx.heading("🖋️ Magnum Opus", size="lg"),
     footer=rx.heading("Footer", size="sm"),
     padding_left="2em",
         padding_right="2em",
