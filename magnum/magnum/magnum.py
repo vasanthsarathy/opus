@@ -1,9 +1,8 @@
 """Welcome to Reflex! This file outlines the steps to create a basic app."""
 from rxconfig import config
-
+import asyncio
 import reflex as rx
 from magnum.state import State
-import json
 
 docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
@@ -29,7 +28,7 @@ def input_area() -> rx.Component:
             rx.hstack(
                 rx.button("Load", on_click=State.load),
                 rx.input(value=State.current_utterance, on_change=State.set_current_utterance),
-                rx.button("Parse", on_click=State.parse)
+                rx.button("Parse", on_click=State.parse, is_loading=State.loading)
             ),
             rx.spacer(),
             rx.divider(),
@@ -41,16 +40,16 @@ def input_area() -> rx.Component:
 
 def output_area() -> rx.Component:
     return rx.tabs(
-    rx.tab_list(
-        rx.tab("Trade Semantics"),
-        rx.tab("Surface Meaning Representation (SMR)"),
-    ),
-    rx.tab_panels(
-        rx.tab_panel(rx.text(State.current_trade_parse)),
-        rx.tab_panel(rx.code_block(State.pretty_smr, 
-                                   language="json",
-                                   font_size="0.7em")),
-    ),
+            rx.tab_list(
+                rx.tab("Trade Semantics"),
+                rx.tab("Surface Meaning Representation (SMR)"),
+            ),
+            rx.tab_panels(
+                rx.tab_panel(rx.text(State.current_trade_parse)),
+                rx.tab_panel(rx.code_block(State.pretty_smr, 
+                                        language="json",
+                                        font_size="0.7em"))
+            ),
     bg="white",
     color="black",
     shadow="lg",
@@ -59,9 +58,12 @@ def output_area() -> rx.Component:
 
 def edit_area() -> rx.Component:
     return rx.card(
-    rx.text("Body of the Card Component"),
-    header=rx.heading("🖋️ Magnum Opus", size="lg"),
-    footer=rx.heading("Footer", size="sm"),
+    rx.text(rx.vstack(
+        rx.input(placeholder="User"),
+        rx.input(value=State.current_trade_parse),
+        rx.button("Submit")
+    )),
+    header=rx.heading("🖋️ Verify the Parse", size="md"),
     padding_left="2em", padding_right="2em",
 )
 

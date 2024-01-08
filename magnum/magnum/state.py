@@ -1,6 +1,7 @@
 import reflex as rx
 import json
 import random
+from opus.agent import Agent
 
 PRELOAD_CACHE_FILE = "../opus/data/utterances_01-parsed.txt"
 
@@ -26,6 +27,10 @@ def preload_cache(filename):
     return cache
 
 
+async def run_opus(utterance, opus_agent):
+    smr = opus_agent.parse(utterance)
+    return smr
+
 class State(rx.State):
     current_utterance: str
     current_trade_parse: str
@@ -33,6 +38,8 @@ class State(rx.State):
     pretty_smr: str
     cache: dict = preload_cache(PRELOAD_CACHE_FILE)
     input_display: str
+    correct: bool
+    loading: bool = False
 
     def save_to_cache(self):
         self.cache.update({hash(self.current_utterance): {"utterance": self.current_utterance, 
@@ -55,23 +62,30 @@ class State(rx.State):
         self.current_smr = rand_parse['smr']
         self.pretty_smr = self.to_pretty_smr()
 
-    def parse(self):
+    async def parse(self):
         cache = self.check_cache()
         if cache:
-            print("I knew that")
             self.current_trade_parse = self.cache[hash(self.current_utterance)]['trade']
             self.current_smr = self.cache[hash(self.current_utterance)]['smr']
             self.pretty_smr = self.to_pretty_smr()
 
         else:
-            print("Whhaa?")
-            self.current_trade_parse = f"parse({self.current_utterance})"
-            self.current_smr = {"utterance": self.current_utterance}
+            self.loading = True
+            yield 
+            params = {"verbose": False, 
+                  "debug": False,
+                  "model": "gpt-3.5-turbo-16k-0613",
+                  "source": "openai",
+                  "speaker": "evan",
+                  "listener": "self"}
+            opus_agent = Agent(params)
+            self.current_smr = await run_opus(self.current_utterance, opus_agent)
+            self.current_trade_parse = opus_agent.trade_semantics(params['speaker'])
             self.pretty_smr = self.to_pretty_smr()
             self.save_to_cache()
-            
-        
-        print(f"Cache Length: {len(self.cache)}")
+        self.loading = False
+
+        #print(f"Cache Length: {len(self.cache)}")
     
 
 
