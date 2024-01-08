@@ -7,7 +7,7 @@ docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
 
-class State(rx.State):
+class ParseState(rx.State):
     """The app state."""
 
     pass
@@ -37,7 +37,6 @@ def index() -> rx.Component:
         h="200px",
         width="100%",
         gap=4,
-
     )
 
 # Add state and page to the app.
