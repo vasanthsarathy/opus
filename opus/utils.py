@@ -1,5 +1,4 @@
 from opus.model import Parse, Utterance, ParsedUtterance
-from opus.agent import Agent
 import json
 from pydantic import ValidationError
 import math

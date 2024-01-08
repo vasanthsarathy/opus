@@ -11,7 +11,7 @@ class Utterance(BaseModel):
 class Parse(BaseModel):
     utterance: Utterance
     parse: dict
-    parser: str
+    parser: dict
 
 class ParsedUtterance(BaseModel):
     utterance: Utterance

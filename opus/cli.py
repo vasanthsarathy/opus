@@ -6,6 +6,8 @@ import random
 from opus.agent import Agent
 import time
 from opus.model import Parse, ParsedUtterance, Utterance
+from datetime import datetime as dt
+DATETIMEFORMAT = "%d-%b-%Y (%H:%M:%S.%f)"
 
 
 # Shared click options
@@ -91,8 +93,12 @@ def batch(ctx, **kwargs):
         trade = opus_agent.trade_semantics(u.speaker)
         parse = Parse(utterance=u,
                       parse={"trade": trade,
-                              "smr": smr},
-                              parser=ctx.obj["model"])
+                              "smr": smr,
+                              "time": dt.now().strftime(DATETIMEFORMAT)
+                              },
+                              parser={"type": "opus",
+                                "name": ctx.obj["model"]}
+                    )
         parses.append(parse)
 
         different_parses = [] # this is the list of different ways of parsing an utterance

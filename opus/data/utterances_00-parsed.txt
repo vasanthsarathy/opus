@@ -21,7 +21,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "instruct(evan,self,stand(self,VAR0),{you(VAR0),INFOCUS(VAR0),INDEFINITE(VAR1)})",
+          "trade": "instruct(evan,self,stand(self,VAR1),{you(VAR0),stand(VAR1),INFOCUS(VAR0),ACTIVATED(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -32,11 +32,11 @@
                 "cognitive_status": "INFOCUS"
               },
               {
-                "text": "none",
-                "type": "NONE",
+                "text": "stand",
+                "type": "NONE.",
                 "role": "supplemental",
                 "variable_name": "VAR1",
-                "cognitive_status": "INDEFINITE"
+                "cognitive_status": "ACTIVATED"
               }
             ],
             "intention": {
@@ -45,7 +45,7 @@
                 "text": "stand",
                 "type": "action",
                 "arguments": [
-                  "VAR0"
+                  "VAR1"
                 ]
               }
             },
@@ -55,11 +55,21 @@
                 "arguments": [
                   "VAR0"
                 ]
+              },
+              {
+                "text": "stand",
+                "arguments": [
+                  "VAR1"
+                ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:03:43.619549)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -121,9 +131,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:03:49.476367)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -185,9 +199,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:03:53.918818)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   }

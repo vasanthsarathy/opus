@@ -63,9 +63,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:10:49.345571)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -96,13 +100,13 @@
             "referents": [
               {
                 "text": "squat",
-                "type": "provided",
+                "type": "NONE",
                 "role": "central",
                 "variable_name": "VAR0",
                 "cognitive_status": "INDEFINITE"
               },
               {
-                "text": "",
+                "text": "none",
                 "type": "NONE",
                 "role": "supplemental",
                 "variable_name": "VAR1",
@@ -127,9 +131,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:10:55.780617)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -155,7 +163,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "instruct(evan,self,walk forward(self,VAR0),{forward(VAR0),INDEFINITE(VAR0)})",
+          "trade": "instruct(evan,self,walk forward(self,VAR0),{forward(VAR0),ACTIVATED(VAR0),INDEFINITE(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -163,6 +171,13 @@
                 "type": "NONE",
                 "role": "central",
                 "variable_name": "VAR0",
+                "cognitive_status": "ACTIVATED"
+              },
+              {
+                "text": "none",
+                "type": "NONE",
+                "role": "supplemental",
+                "variable_name": "VAR1",
                 "cognitive_status": "INDEFINITE"
               }
             ],
@@ -184,9 +199,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:01.236681)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -248,9 +267,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:07.189004)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -312,9 +335,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:14.494464)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -369,9 +396,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:19.358760)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -440,9 +471,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:28.164668)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -468,22 +503,22 @@
           "loc": 0
         },
         "parse": {
-          "trade": "question(evan,self,trust(self,VAR0,VAR1),{you(VAR0),who(VAR1),INFOCUS(VAR0),INDEFINITE(VAR1)})",
+          "trade": "question(evan,self,trust(self,VAR0,VAR1),{you(VAR1),INDEFINITE(VAR0),ACTIVATED(VAR1)})",
           "smr": {
             "referents": [
               {
-                "text": "you trust",
+                "text": "trust",
                 "type": "NONE",
                 "role": "central",
                 "variable_name": "VAR0",
-                "cognitive_status": "INFOCUS"
+                "cognitive_status": "INDEFINITE"
               },
               {
-                "text": "who",
-                "type": "NONE",
+                "text": "you",
+                "type": "NONE.",
                 "role": "supplemental",
                 "variable_name": "VAR1",
-                "cognitive_status": "INDEFINITE"
+                "cognitive_status": "ACTIVATED"
               }
             ],
             "intention": {
@@ -501,19 +536,17 @@
               {
                 "text": "you",
                 "arguments": [
-                  "VAR0"
-                ]
-              },
-              {
-                "text": "who",
-                "arguments": [
                   "VAR1"
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:34.214115)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -539,7 +572,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "question(evan,self,trust(self,VAR0,VAR1),{me(VAR0),dempster(VAR1),INFOCUS(VAR0),FAMILIAR(VAR1)})",
+          "trade": "question(evan,self,trust(self,VAR0),{me(VAR0),dempster(VAR1),INFOCUS(VAR0),DEFINITE(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -551,10 +584,10 @@
               },
               {
                 "text": "dempster",
-                "type": "NONE",
+                "type": "NONE.",
                 "role": "supplemental",
                 "variable_name": "VAR1",
-                "cognitive_status": "FAMILIAR"
+                "cognitive_status": "DEFINITE"
               }
             ],
             "intention": {
@@ -563,8 +596,7 @@
                 "text": "trust",
                 "type": "concept",
                 "arguments": [
-                  "VAR0",
-                  "VAR1"
+                  "VAR0"
                 ]
               }
             },
@@ -582,9 +614,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:49.182382)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -646,9 +682,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:55.145153)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -703,9 +743,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:11:59.211036)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -731,7 +775,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "instruct(evan,self,walk forward(self,VAR0),{forward(VAR0),INDEFINITE(VAR0)})",
+          "trade": "instruct(evan,self,walk forward(self,VAR0),{forward(VAR0),INFOCUS(VAR0),INDEFINITE(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -739,6 +783,13 @@
                 "type": "NONE",
                 "role": "central",
                 "variable_name": "VAR0",
+                "cognitive_status": "INFOCUS"
+              },
+              {
+                "text": "none",
+                "type": "NONE",
+                "role": "supplemental",
+                "variable_name": "VAR1",
                 "cognitive_status": "INDEFINITE"
               }
             ],
@@ -760,9 +811,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:07.589026)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -793,7 +848,7 @@
             "referents": [
               {
                 "text": "you",
-                "type": "physobj",
+                "type": "agent",
                 "role": "central",
                 "variable_name": "VAR0",
                 "cognitive_status": "INFOCUS"
@@ -817,9 +872,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:13.694042)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -845,7 +904,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "instruct(evan,self,catch(self,VAR0),{i(VAR1),you(VAR0),ACTIVATED(VAR0),INFOCUS(VAR1)})",
+          "trade": "instruct(evan,self,catch(self,VAR0),{forget(VAR1,VAR0),ACTIVATED(VAR0),INFOCUS(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -875,21 +934,20 @@
             },
             "descriptors": [
               {
-                "text": "i",
+                "text": "forget",
                 "arguments": [
-                  "VAR1"
-                ]
-              },
-              {
-                "text": "you",
-                "arguments": [
+                  "VAR1",
                   "VAR0"
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:21.395054)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -944,9 +1002,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:25.713574)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1015,9 +1077,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:31.469381)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1091,9 +1157,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:41.708422)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1154,9 +1224,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:45.780625)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1211,9 +1285,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:51.854834)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1275,9 +1353,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:12:57.768102)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1303,7 +1385,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "statement(evan,self,lower(VAR0),{squat(VAR1),arms(VAR0),DEFINITE(VAR0),INDEFINITE(VAR1)})",
+          "trade": "instruct(evan,self,lower(self,VAR0),{squat(VAR1),arms(VAR0),DEFINITE(VAR0),INDEFINITE(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -1322,7 +1404,7 @@
               }
             ],
             "intention": {
-              "intent": "statement",
+              "intent": "instruct",
               "proposition": {
                 "text": "lower",
                 "type": "action",
@@ -1345,9 +1427,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:06.579080)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1402,9 +1488,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:10.437563)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1430,7 +1520,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "instruct(evan,self,squat(self,VAR0),{squat(VAR0),shafer(VAR1),INDEFINITE(VAR0),INDEFINITE(VAR1)})",
+          "trade": "question(evan,self,squat(self,VAR0),{squat(VAR0),shafer(VAR1),INDEFINITE(VAR0),INDEFINITE(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -1449,7 +1539,7 @@
               }
             ],
             "intention": {
-              "intent": "instruct",
+              "intent": "question",
               "proposition": {
                 "text": "squat",
                 "type": "action",
@@ -1472,9 +1562,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:21.537866)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1543,9 +1637,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:28.746221)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1613,9 +1711,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:32.941803)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1684,9 +1786,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:38.917000)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1741,9 +1847,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:42.943922)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1811,9 +1921,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:49.696038)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1875,9 +1989,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:13:58.541488)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1938,9 +2056,13 @@
                 ]
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:14:04.206547)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   },
@@ -1966,7 +2088,7 @@
           "loc": 0
         },
         "parse": {
-          "trade": "statement(evan,self,solid(VAR1),{obstacle(VAR0),not(),DEFINITE(VAR0),FAMILIAR(VAR1)})",
+          "trade": "statement(evan,self,not solid(VAR1),{obstacle(VAR0),DEFINITE(VAR0),FAMILIAR(VAR1)})",
           "smr": {
             "referents": [
               {
@@ -1987,7 +2109,7 @@
             "intention": {
               "intent": "statement",
               "proposition": {
-                "text": "solid",
+                "text": "not solid",
                 "type": "concept",
                 "arguments": [
                   "VAR1"
@@ -2000,15 +2122,15 @@
                 "arguments": [
                   "VAR0"
                 ]
-              },
-              {
-                "text": "not",
-                "arguments": []
               }
             ]
-          }
+          },
+          "time": "08-Jan-2024 (11:14:10.735620)"
         },
-        "parser": "gpt-3.5-turbo-16k-0613"
+        "parser": {
+          "type": "opus",
+          "name": "gpt-3.5-turbo-16k-0613"
+        }
       }
     ]
   }

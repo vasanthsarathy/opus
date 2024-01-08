@@ -2,15 +2,11 @@
 from rxconfig import config
 
 import reflex as rx
+from magnum.state import State
+import json
 
 docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
-
-
-class ParseState(rx.State):
-    """The app state."""
-
-    pass
 
 
 def header() -> rx.Component:
@@ -29,11 +25,15 @@ def header() -> rx.Component:
     )
 
 def input_area() -> rx.Component:
-    return rx.box(
+    return rx.vstack(
             rx.hstack(
-                rx.input(),
-                rx.button("Parse")
+                rx.button("Load", on_click=State.load),
+                rx.input(value=State.current_utterance, on_change=State.set_current_utterance),
+                rx.button("Parse", on_click=State.parse)
             ),
+            rx.spacer(),
+            rx.divider(),
+            edit_area(),
             align_items="left",
         padding_left="2em",
 
@@ -46,8 +46,10 @@ def output_area() -> rx.Component:
         rx.tab("Surface Meaning Representation (SMR)"),
     ),
     rx.tab_panels(
-        rx.tab_panel(rx.text("Text from tab 1.")),
-        rx.tab_panel(rx.checkbox("Text from tab 2.")),
+        rx.tab_panel(rx.text(State.current_trade_parse)),
+        rx.tab_panel(rx.code_block(State.pretty_smr, 
+                                   language="json",
+                                   font_size="0.7em")),
     ),
     bg="white",
     color="black",
@@ -60,19 +62,25 @@ def edit_area() -> rx.Component:
     rx.text("Body of the Card Component"),
     header=rx.heading("🖋️ Magnum Opus", size="lg"),
     footer=rx.heading("Footer", size="sm"),
-    padding_left="2em",
-        padding_right="2em",
+    padding_left="2em", padding_right="2em",
 )
 
 
 def index() -> rx.Component:
     return rx.grid(
         rx.grid_item(header(), row_span=1, col_span=4, bg="white"),
-        rx.grid_item(input_area(), row_span=2, col_span=2, bg="white"),
-        rx.grid_item(output_area(), row_span=1, col_span=2, bg="white", padding_left="2em",
-        padding_right="2em"),
-        rx.grid_item(edit_area(), row_span=4, col_span=4, bg="white", padding_left="2em",
-        padding_right="2em"),
+        rx.grid_item(input_area(), row_span=1, col_span=2, bg="white"),
+        rx.grid_item(output_area(), 
+                     row_span=1, 
+                     col_span=2, 
+                     bg="white", 
+                     padding_left="2em",
+                     padding_right="2em"),
+        # rx.grid_item(edit_area(), 
+        #              row_span=4, 
+        #              col_span=2, bg="white", 
+        #              padding_left="2em",
+        #              padding_right="2em"),
         template_rows="repeat(7, 1fr)",
         template_columns="repeat(4, 1fr)",
         h="200px",
@@ -84,18 +92,3 @@ def index() -> rx.Component:
 app = rx.App()
 app.add_page(index)
 app.compile()
-
-
-"""
-rx.grid(
-    rx.grid_item(row_span=2, col_span=1, bg="lightblue"),
-    rx.grid_item(col_span=2, bg="lightgreen"),
-    rx.grid_item(col_span=1, bg="yellow"),
-    rx.grid_item(col_span=3, bg="orange"),
-    template_rows="repeat(2, 1fr)",
-    template_columns="repeat(4, 1fr)",
-    h="200px",
-    width="100%",
-    gap=4,
-)
-"""
