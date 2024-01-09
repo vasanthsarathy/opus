@@ -5,9 +5,7 @@ import json
 import random
 from opus.agent import Agent
 import time
-from opus.model import Parse, ParsedUtterance, Utterance
 from datetime import datetime as dt
-DATETIMEFORMAT = "%d-%b-%Y (%H:%M:%S.%f)"
 
 
 # Shared click options
@@ -63,6 +61,7 @@ def run(ctx, **kwargs):
 @add_options(shared_options)
 @click.option('--debug/--no-debug', '-d', default=False, 
               help="If set, then debugging printing happens")
+@click.option('--append/--no-append', '-a', default=False, help="if set append parses to preprocessed file. Will still create a new file" )
 @click.option('--input', '-i', default="", help="Input file path")
 @click.option('--speaker', '-s', default="evan", help="Speaker name")
 @click.option('--listener', '-l', default="self", help="Listener name")
@@ -70,52 +69,13 @@ def run(ctx, **kwargs):
               help="specify a model. Run 'opus models' to see available models and their sources.")
 @click.option('--source', '-s', default="openai", help="specify a source for your model")
 @click.pass_context
-def batch(ctx, **kwargs):
+def parse(ctx, **kwargs):
     ctx.obj.update(kwargs)
-    
-    opus_agent = Agent(ctx.obj)
-    #Pull file
-    utterances = [] 
-    with open(ctx.obj["input"], "r") as utterance_file:
-        for line in utterance_file:
-            utterances.append(Utterance(text=line.replace("\n",""), 
-                                        speaker=ctx.obj["speaker"], 
-                                        listener=ctx.obj["listener"],
-                                        dialog=[line.replace("\n","")],
-                                        loc=0))
-            #TODO will need to address the situation this is a dialog file. 
-    
-    # Parse Utterances
-    parses = []
-    parsed_utterances = [] # this is a list of ParsedUtterances, 
-    for u in utterances:
-        smr = opus_agent.parse(u.text)
-        trade = opus_agent.trade_semantics(u.speaker)
-        parse = Parse(utterance=u,
-                      parse={"trade": trade,
-                              "smr": smr,
-                              "time": dt.now().strftime(DATETIMEFORMAT)
-                              },
-                              parser={"type": "opus",
-                                "name": ctx.obj["model"]}
-                    )
-        parses.append(parse)
-
-        different_parses = [] # this is the list of different ways of parsing an utterance
-        different_parses.append(parse) #we only append the one parse for now, but in the future we can add
-        
-        parsed_utterance = ParsedUtterance(utterance=u, parses=different_parses)
-        parsed_utterances.append(parsed_utterance)
-        click.secho(u.text, fg="green")
-        click.secho(trade, fg="blue")
-
-    # dump to file 
-    output_filename = ctx.obj["input"].replace(".", "-parsed.")    
-
-    dicts = [p.dict() for p in parsed_utterances]
-    with open(output_filename, "w") as output_file:
-        json.dump(dicts, output_file, indent=2)    
-
+    from opus.pipelines import parse_from_raw_file, parse_from_preprocessed_file
+    if ctx.obj["append"]:
+        parse_from_preprocessed_file(ctx.obj)
+    else:
+        parse_from_raw_file(ctx.obj)
 
 @click.command()
 @add_options(shared_options)
@@ -154,7 +114,7 @@ def models(ctx, **kwargs):
 cli.add_command(run)
 cli.add_command(models)
 cli.add_command(serve)
-cli.add_command(batch)
+cli.add_command(parse)
 
 def main():
     cli(obj={})

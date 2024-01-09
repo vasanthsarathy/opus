@@ -1,4 +1,4 @@
-from opus.model import Parse, Utterance, ParsedUtterance
+from opus.model import Parse, Utterance, Parses
 import json
 from pydantic import ValidationError
 import math
@@ -42,7 +42,7 @@ def load_parsed_utterances_from_file(filename: str):
     for i in items:
         #validate data
         try:
-            parsed_utterance = ParsedUtterance.validate(i)
+            parsed_utterance = Parses.validate(i)
         except ValidationError as e:
             print(e)
         parsed_utterances.append(parsed_utterance)
@@ -50,7 +50,7 @@ def load_parsed_utterances_from_file(filename: str):
     return parsed_utterances
 
 
-def select_parsed_utterance(parsed_utterances: list[ParsedUtterance]):
+def select_parsed_utterance(parsed_utterances: list[Parses]):
     """
     Returns a single ParsedUtterance object 
 
