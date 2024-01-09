@@ -16,5 +16,3 @@ class Parse(BaseModel):
 class ParsedUtterance(BaseModel):
     utterance: Utterance
     parses: list[Parse]
-
-
