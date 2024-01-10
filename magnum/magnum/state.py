@@ -6,6 +6,7 @@ from opus.agent import Agent
 from opus.model import Parses, Parse, Utterance, Time, Semantics, Interlocutor, Parser
 from datetime import datetime as dt
 from opus.io import load_preprocessed
+import click
 
 #--- GLOBAL DEFAULTS
 PRELOAD_CACHE_FILE = "../opus/results/utterances_00_preprocessed_parsed.jsonl"
@@ -43,6 +44,7 @@ class State(rx.State):
 
     @rx.cached_var
     def ctx(self):
+        click.secho(">> Getting CTX", fg="yellow")
         return dict({"input": self.cache_input_file,
                "speaker": self.current_speaker,
                "listener": self.current_listener,
@@ -61,14 +63,22 @@ class State(rx.State):
     # Cache: dict of "Parses" objects, each key is the hash of the utterance and each value represents an Utterance, and associated list of Parse objects of that utterance
     @rx.cached_var
     def cache(self) -> dict: #just a hashed version of that cache
+        click.secho(">> Updating Cache", fg="red")
         list_cache = list(load_preprocessed(self.ctx))
         cache = {}
         for item in list_cache:
-            cache.update({hash(item.utterance.text): item})        
+            cache.update({hash(item.utterance.text): item.dict()})        
+        click.secho("Cache completed", fg="green")
         return cache
 
     def load(self):
-        list_cache = list(self.cache.values())
+        """
+        This loads one utterance + parse combo from the cache
+        """
+        list_cache = []
+        for item in list(self.cache.values()):
+            list_cache.append(Parses(**item))
+        #list_cache = list(self.cache.values())
         list_cache.sort(key=lambda x: len(x.candidate_parses))
         selected = list_cache[0] # this is a Parses object
         self.current_utterance = selected.utterance.text

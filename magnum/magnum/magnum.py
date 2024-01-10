@@ -47,12 +47,12 @@ def input_area() -> rx.Component:
             rx.button("Parse", on_click=State.parse, is_loading=State.loading),
         ),
         rx.spacer(),
-        rx.hstack(
-            rx.text("speaker: "),
-            rx.input(value="evan", on_change=State.set_current_speaker),
-            rx.text("listener: "),
-            rx.input(value="self", on_change=State.set_current_listener),
-        ),
+        # rx.hstack(
+        #     rx.text("speaker: "),
+        #     rx.input(placeholder="evan", default_value="evan", on_change=State.set_current_speaker),
+        #     rx.text("listener: "),
+        #     rx.input(placeholder="self", default_value="self",on_change=State.set_current_listener),
+        # ),
         rx.hstack(
             rx.text("model: "),
             rx.select(
