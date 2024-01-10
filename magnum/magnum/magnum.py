@@ -30,6 +30,7 @@ def header() -> rx.Component:
 
 
 def input_area() -> rx.Component:
+    models = ["gpt-4-0613", "gpt-4-0314", "gpt-4","gpt-3.5-turbo-16k","gpt-3.5-turbo-16k-0613"]
     return rx.vstack(
         rx.hstack(
             rx.button("Load", on_click=State.load),
@@ -39,6 +40,21 @@ def input_area() -> rx.Component:
             rx.button("Parse", on_click=State.parse, is_loading=State.loading),
         ),
         rx.spacer(),
+        rx.hstack(
+            rx.text("speaker: "),
+            rx.input(value="evan", 
+                     on_change=State.set_current_speaker),
+            rx.text("listener: "),
+            rx.input(value="self", 
+                     on_change=State.set_current_listener),        
+        ),
+        rx.hstack(
+            rx.text("model: "),
+            rx.select(models, 
+                      value="gpt-3.5-turbo-16k-0613",
+                      placeholder="Select a model",
+                      on_change=State.set_current_model)
+            ),
         rx.divider(),
         edit_area(),
         align_items="left",
@@ -49,7 +65,7 @@ def input_area() -> rx.Component:
 def output_area() -> rx.Component:
     return rx.tabs(
         rx.tab_list(
-            rx.tab("Trade Semantics"),
+            rx.tab("TRADE Semantics"),
             rx.tab("Surface Meaning Representation (SMR)"),
         ),
         rx.tab_panels(
