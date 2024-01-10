@@ -38,7 +38,7 @@ class State(rx.State):
     current_model: str = "gpt-3.5-turbo-16k-0613"
 
     # input_display: str
-    correct: bool
+    correct_str: str = "yes"
     loading: bool = False
 
     @rx.cached_var
@@ -50,6 +50,13 @@ class State(rx.State):
                "source": "openai",
                "verbose": False,
                "debug": False})
+    
+    @rx.var
+    def is_wrong(self):
+        if self.correct_str == "yes":
+            return False
+        else:
+            return True
     
     # Cache: dict of "Parses" objects, each key is the hash of the utterance and each value represents an Utterance, and associated list of Parse objects of that utterance
     @rx.cached_var
@@ -171,4 +178,4 @@ class State(rx.State):
             self.save_to_cache()
         self.loading = False
 
-        # print(f"Cache Length: {len(self.cache)}")
+

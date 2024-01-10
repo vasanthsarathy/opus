@@ -15,9 +15,10 @@ def header() -> rx.Component:
             "🐧 OPUS", text_align="justify", font_family="Courier New", font_size="3em"),
         rx.text(
             "LLM-based Open World Natural Language Parser with Unrestricted Semantics",
-            font_family="Courier New",font_size="1.5em"
+            font_family="Courier New",
+            font_size="1.5em",
         ),
-        rx.text("version 0.1", as_="i",font_family="Courier New"),
+        rx.text("version 0.1", as_="i", font_family="Courier New"),
         rx.spacer(),
         rx.html("<br>"),
         rx.divider(),
@@ -30,7 +31,13 @@ def header() -> rx.Component:
 
 
 def input_area() -> rx.Component:
-    models = ["gpt-4-0613", "gpt-4-0314", "gpt-4","gpt-3.5-turbo-16k","gpt-3.5-turbo-16k-0613"]
+    models = [
+        "gpt-4-0613",
+        "gpt-4-0314",
+        "gpt-4",
+        "gpt-3.5-turbo-16k",
+        "gpt-3.5-turbo-16k-0613",
+    ]
     return rx.vstack(
         rx.hstack(
             rx.button("Load", on_click=State.load),
@@ -42,19 +49,19 @@ def input_area() -> rx.Component:
         rx.spacer(),
         rx.hstack(
             rx.text("speaker: "),
-            rx.input(value="evan", 
-                     on_change=State.set_current_speaker),
+            rx.input(value="evan", on_change=State.set_current_speaker),
             rx.text("listener: "),
-            rx.input(value="self", 
-                     on_change=State.set_current_listener),        
+            rx.input(value="self", on_change=State.set_current_listener),
         ),
         rx.hstack(
             rx.text("model: "),
-            rx.select(models, 
-                      value="gpt-3.5-turbo-16k-0613",
-                      placeholder="Select a model",
-                      on_change=State.set_current_model)
+            rx.select(
+                models,
+                value="gpt-3.5-turbo-16k-0613",
+                placeholder="Select a model",
+                on_change=State.set_current_model,
             ),
+        ),
         rx.divider(),
         edit_area(),
         align_items="left",
@@ -69,7 +76,13 @@ def output_area() -> rx.Component:
             rx.tab("Surface Meaning Representation (SMR)"),
         ),
         rx.tab_panels(
-            rx.tab_panel(rx.text(State.current_trade_parse, font_size="1.2em", font_family="Courier New")),
+            rx.tab_panel(
+                rx.text(
+                    State.current_trade_parse,
+                    font_size="1.2em",
+                    font_family="Courier New",
+                )
+            ),
             rx.tab_panel(
                 rx.code_block(State.pretty_smr, language="json", font_size="0.7em")
             ),
@@ -83,14 +96,29 @@ def output_area() -> rx.Component:
 
 def edit_area() -> rx.Component:
     return rx.card(
-        rx.text(
-            rx.vstack(
-                rx.input(placeholder="User"),
-                rx.input(value=State.current_trade_parse),
-                rx.button("Submit"),
-            )
+        rx.vstack(
+            rx.badge("Is this parse correct?", color_scheme="green"),
+            rx.radio_group(["yes", "no"], on_change=State.set_correct_str),
+            rx.box(
+                rx.cond(
+                    State.is_wrong,
+                    rx.vstack(
+                        rx.input(placeholder="Your name"),
+                        rx.editable(
+                            rx.editable_preview(),
+                            rx.editable_input(),  
+                            placeholder=State.current_trade_parse,
+                            default_value=State.current_trade_parse,
+                            on_submit=State.set_current_trade_parse,
+                            start_with_edit_view=True,
+                            width="100%"),
+                    ),
+                ),
+                width="100%",
+            ),
+            rx.button("Save"),
         ),
-        header=rx.heading("🖋️ Verify the Parse", size="md"),
+        # header=rx.heading("🖋️ Verify the Parse", size="md"),
         padding_left="2em",
         padding_right="2em",
     )
@@ -119,4 +147,4 @@ def index() -> rx.Component:
 # Add state and page to the app.
 app = rx.App()
 app.add_page(index)
-#app.compile()
+# app.compile()
