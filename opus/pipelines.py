@@ -24,41 +24,10 @@ def select_from_file(ctx):
     """
 
     stream = load_preprocessed(ctx)
+    candidates = []
     for obj in stream:
-        gold_exists = False
-        for parse in obj.parses:
-            if not parse.is_gold:
-                gold_exists = True
-                break
-        
-        if not gold_exists:
-            
-        
+        candidates.append(obj.candidate_parses)
 
+    candidates.sort(key=lambda x:len(x.candidate_parses))
 
-
-
-
-
-
-
-
-
-
-def parse_one(utterance, ctx):
-    opus_agent = Agent(ctx)
-    DATETIMEFORMAT = "%d-%b-%Y (%H:%M:%S.%f)"
-    smr = opus_agent.parse(utterance)
-    trade = opus_agent.trade_semantics(ctx['speaker'])
-    candidate_parse = Parse(
-        utterance=utterance,
-        semantics=Semantics(trade=trade, smr=smr),
-        time=Time(
-            time=dt.now().strftime(DATETIMEFORMAT), str_format=DATETIMEFORMAT
-        ),
-        parser=Parser(name=ctx["model"], type_name="opus"),
-        comments=ctx['comments'],
-        is_gold=ctx['is_gold']
-    )
-        obj.candidate_parses.append(candidate_parse)
-        yield obj
+    return candidates[0] # returns a "Parses" object that contains all the parses for a particular utterance. 

@@ -19,12 +19,20 @@ opus run --model gpt-3.5-turbo-16k-0613 --source openai
 Sometimes you need to run a batch of utterances through opus. 
 
 ```bash
-opus batch --input FILENAME.txt --speaker evan --listener self
+opus parse --input FILENAME.txt --speaker evan --listener self
 ```
 
 You can also optionally add the `--model` and `--source` options as well.
 
-The script outputs a file in the same dir as the input file and stores it as `FILENAME-parsed.txt`
+If the `FILENAME.txt` is a raw list of utterances, this command will generate two files: 
+1. `FILENAME_preprocessed.jsonl`
+2. `FILENAME_preprocessed_parsed.jsonl`
+
+The first one just contains utterances within a larger dictionary datastructure. The second one contains the parses as well within the dictionary. 
+
+If you run this command with the `--append` option and provide a non-raw or processed file (like the file 1 from above) then this will append parses to each of the utterances
+
+Generally, this command walks through each utterance and adds parses to it. 
 
 ### API
 

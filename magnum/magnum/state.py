@@ -2,34 +2,17 @@ import reflex as rx
 import json
 import random
 from opus.agent import Agent
-from opus.model import Utterance, Parse, ParsedUtterance
+from opus.model import Parses
+from opus.io import load_preprocessed
 
-PRELOAD_CACHE_FILE = "../opus/data/utterances_01-parsed.txt"
-
+PRELOAD_CACHE_FILE = "../opus/results/utterances_00_preprocessed_parsed.jsonl"
 
 def preload_cache(filename):
-    """
-    Returns a cache dict with a set of parses in a file
-    """
-
-    with open(filename, "r") as f:
-        utterances_and_parses = json.load(f)
-
+    ctx = {'input': filename}
+    stream = load_preprocessed(ctx)
     cache = {}
-    for item in utterances_and_parses:
-        utterance = item["utterance"]["text"]
-        for p in item["parses"]:
-            if p["parser"]["type"] == "opus":
-                cache.update(
-                    {
-                        hash(utterance): {
-                            "utterance": utterance,
-                            "trade": p["parse"]["trade"],
-                            "smr": p["parse"]["smr"],
-                        }
-                    }
-                )
-
+    for obj in stream:
+        cache.update({hash(obj.utterance.text): obj})
     return cache
 
 
@@ -45,11 +28,23 @@ class State(rx.State):
     pretty_smr: str
 
     # The cache is a dict with the hash(utterance) as its key
-    cache: dict = preload_cache(PRELOAD_CACHE_FILE)
+    #cache: dict = preload_cache(PRELOAD_CACHE_FILE)
     
     input_display: str
     correct: bool
     loading: bool = False
+
+    def load(self):
+        ctx = {"input": PRELOAD_CACHE_FILE} 
+        cache = list(load_preprocessed(ctx))
+        cache.sort(key=lambda x: len(x.candidate_parses))
+
+        selected = cache[0] # this is a Parses object
+        self.current_utterance = selected.utterance.text
+        self.current_trade_parse = selected.candidate_parses[0].semantics.trade
+        self.current_smr = selected.candidate_parses[0].semantics.smr
+        self.pretty_smr = self.to_pretty_smr() 
+
 
     def save_to_cache(self):
         self.cache.update(
@@ -63,21 +58,23 @@ class State(rx.State):
         )
 
     def check_cache(self):
-        if hash(self.current_utterance) in self.cache:
-            return self.cache
+        ctx = {"input": PRELOAD_CACHE_FILE} 
+        stream = load_preprocessed(ctx)
+        cache = {}
+        for obj in stream:
+            cache.update({
+                hash(obj.utterance.text): obj
+            })
+
+        if hash(self.current_utterance) in cache:
+            return cache
         else:
             return {}
 
     def to_pretty_smr(self):
         return json.dumps(self.current_smr, indent=2)
 
-    def load(self):
-        rand_parse = random.choice(list(self.cache.values()))
-        self.current_utterance = rand_parse["utterance"]
-        self.current_trade_parse = rand_parse["trade"]
-        self.current_smr = rand_parse["smr"]
-        self.pretty_smr = self.to_pretty_smr()
-
+    
     async def parse(self):
         cache = self.check_cache()
         if cache:

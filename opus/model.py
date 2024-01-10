@@ -65,16 +65,6 @@ class Parse(BaseModel):
     comments: str # comments 
     is_gold: bool # whether or not this is a gold parse of an utterance
 
-"""
-Currently
-semantics={"trade": str,
-"smr": str}
-
-time = dt.now().strftime(DATETIMEFORMAT)
-
-parser={"type": "opus" | "human","name": str model name}
-"""
-
 class Parses(BaseModel):
     """
     For a particular utterance, contains a list of parses
