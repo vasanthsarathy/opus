@@ -1,11 +1,10 @@
 from opus.agent import Agent
 from datetime import datetime as dt
 from opus.model import *
-
+from opus.defaults import DATETIMEFORMAT
 
 def parse_utterances(stream, ctx):
     opus_agent = Agent(ctx)
-    DATETIMEFORMAT = "%d-%b-%Y (%H:%M:%S.%f)"
     for obj in stream:
         smr = opus_agent.parse(obj.utterance.text)
         trade = opus_agent.trade_semantics(obj.utterance.speaker.name)

@@ -71,9 +71,9 @@ def run(ctx, **kwargs):
 @click.pass_context
 def parse(ctx, **kwargs):
     ctx.obj.update(kwargs)
-    from opus.pipelines import parse_from_raw_file, parse_from_preprocessed_file
+    from opus.pipelines import parse_from_raw_file, batch_parse_from_preprocessed_file
     if ctx.obj["append"]:
-        parse_from_preprocessed_file(ctx.obj)
+        batch_parse_from_preprocessed_file(ctx.obj)
     else:
         parse_from_raw_file(ctx.obj)
 

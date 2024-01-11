@@ -8,9 +8,10 @@ from datetime import datetime as dt
 from opus.io import load_preprocessed
 import click
 
+from opus.defaults import DATETIMEFORMAT
+
 #--- GLOBAL DEFAULTS
-PRELOAD_CACHE_FILE = "../opus/results/utterances_00_preprocessed_parsed.jsonl"
-DATETIMEFORMAT = "%d-%b-%Y (%H:%M:%S.%f)"
+CACHE_FILE = "../data/parsed/master.jsonl"
 
 
 def preload_cache(filename):
@@ -28,7 +29,7 @@ async def run_opus(utterance, opus_agent):
 
 # TODO: revisit how we do vars, especially with caching
 class State(rx.State):
-    cache_input_file: str = PRELOAD_CACHE_FILE
+    cache_input_file: str = CACHE_FILE
     current_utterance: str = ""
     current_trade_parse: str = ""
     current_speaker: str = "evan"
@@ -37,6 +38,7 @@ class State(rx.State):
     pretty_smr: str = ""
     username: str = ""
     current_model: str = "gpt-3.5-turbo-16k-0613"
+    show_edit: bool = False
 
     # input_display: str
     correct_str: str = "yes"
@@ -53,6 +55,13 @@ class State(rx.State):
                "verbose": False,
                "debug": False})
     
+    @rx.cached_var
+    def currents(self):
+        return {"current_utterance": self.current_utterance,
+                "current_trade_parse": self.current_trade_parse,
+                "current_smr": self.current_smr,
+                "username": self.username}
+
     @rx.var
     def is_wrong(self):
         if self.correct_str == "yes":
@@ -60,6 +69,15 @@ class State(rx.State):
         else:
             return True
     
+    def change_show_edit(self):
+        self.show_edit = not (self.show_edit)
+
+    def clear(self):
+        self.show_edit = False
+        self.current_utterance = ""
+        self.current_trade_parse = ""
+        self.current_smr = {}
+
     # Cache: dict of "Parses" objects, each key is the hash of the utterance and each value represents an Utterance, and associated list of Parse objects of that utterance
     @rx.cached_var
     def cache(self) -> dict: #just a hashed version of that cache
@@ -85,11 +103,28 @@ class State(rx.State):
         self.current_trade_parse = selected.candidate_parses[0].semantics.trade
         self.current_smr = selected.candidate_parses[0].semantics.smr
         self.pretty_smr = self.to_pretty_smr() 
+        self.show_edit = True
+        self.correct_str = "yes"
+
+    def save(self):
+        self.update_cache()
+        self.save_cache_to_file()
+
+    # def cache_to_list_of_dicts(self):
+    #     cache = []
+    #     for item in self.cache.values():
+    #         cache.append(item.dict())
+    #     return cache
+
+    def save_cache_to_file(self):
+        filename = self.cache_input_file.replace(".jsonl", f"{dt.now().strftime(DATETIMEFORMAT)}")
+        with open(filename, "w") as f:
+            json.dump(self.cache, f)
 
     def update_cache(self):
         # find the first item corresponding to the current cache and add a parse to it
         if hash(self.current_utterance) in self.cache:
-            self.append_to_candidate_parses(self)
+            self.append_to_candidate_parses()
         else: # new utterance 
             # Compute new Parse entry for the list of candidate_parses
             speaker = Interlocutor(name="evan", 
@@ -117,7 +152,7 @@ class State(rx.State):
                                                 type_name="human"),
                                 comments="",
                                 is_gold=True)
-            self.cache[hash(self.current_utterance)].candidate_parses += new_parse
+            self.cache[hash(self.current_utterance)].candidate_parses += new_parse.dict()
 
 
     def append_to_candidate_parses(self):
@@ -125,8 +160,8 @@ class State(rx.State):
         parses = self.cache[hash(self.current_utterance)]
 
         # Compute new Parse entry for the list of candidate_parses
-        utterance = parses.utterance
-        utterance.loc_id = len(parses.candidate_parses)
+        utterance = parses["utterance"]
+        utterance["loc_id"] = len(parses["candidate_parses"])
         computed_smr = self.compute_smr_from_trade()
         semantics=Semantics(trade=self.current_trade_parse,
                             smr=computed_smr)
@@ -139,23 +174,15 @@ class State(rx.State):
                                             type_name="human"),
                             comments="",
                             is_gold=True)
-
-        self.cache[hash(self.current_utterance)].candidate_parses += new_parse
+        
+        new_parse_dict = new_parse.dict()
+        print(json.dumps(new_parse_dict, indent=2))
+        self.cache[hash(self.current_utterance)]["candidate_parses"].append(new_parse_dict)
 
     def compute_smr_from_trade(self):
         # TODO: fix this to actually compute it from trade parse
-        return self.current_smr
+        return {}
 
-    def save_to_cache(self):
-        self.cache.update(
-            {
-                hash(self.current_utterance): {
-                    "utterance": self.current_utterance,
-                    "trade": self.current_trade_parse,
-                    "smr": self.pretty_smr,
-                }
-            }
-        )
 
     def check_cache(self):
         if hash(self.current_utterance) in self.cache:
@@ -168,6 +195,8 @@ class State(rx.State):
 
     async def parse(self):
         # print(f"\n CTX:\n----\n{json.dumps(self.ctx, indent=2)}")
+        if self.current_utterance == "":
+            return
         cache = self.check_cache()
         if cache:
             # choose the first parse
@@ -187,5 +216,7 @@ class State(rx.State):
             self.pretty_smr = self.to_pretty_smr()
             self.save_to_cache()
         self.loading = False
+        self.show_edit = True
+        self.correct_str = "yes"
 
 

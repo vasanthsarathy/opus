@@ -12,7 +12,8 @@ def header() -> rx.Component:
     return rx.box(
         rx.spacer(),
         rx.heading(
-            "🐧 OPUS", text_align="justify", font_family="Courier New", font_size="3em"),
+            "🐧 OPUS",text_align="justify", font_family="Courier New", font_size="3em"
+        ),
         rx.text(
             "LLM-based Open World Natural Language Parser with Unrestricted Semantics",
             font_family="Courier New",
@@ -40,12 +41,21 @@ def input_area() -> rx.Component:
     ]
     return rx.vstack(
         rx.hstack(
-            rx.button("Load", on_click=State.load),
+            rx.button("Load", on_click=State.load, color_scheme="blue"),
             rx.input(
-                value=State.current_utterance, on_change=State.set_current_utterance
+                placeholder='Type in your utterance or click "Load" to load an existing one',
+                value=State.current_utterance,
+                on_change=State.set_current_utterance,
             ),
-            rx.button("Parse", on_click=State.parse, is_loading=State.loading),
+            rx.button(
+                "Parse",
+                on_click=State.parse,
+                is_loading=State.loading,
+                color_scheme="green",
+            ),
+            rx.button("Clear", on_click=State.clear, color_scheme="gray"),
         ),
+        rx.text('You only need to hit "Parse" for new utterances', font_size="1.1em"),
         rx.spacer(),
         # rx.hstack(
         #     rx.text("speaker: "),
@@ -54,16 +64,16 @@ def input_area() -> rx.Component:
         #     rx.input(placeholder="self", default_value="self",on_change=State.set_current_listener),
         # ),
         rx.hstack(
-            rx.text("model: "),
+            rx.text("LLM: "),
             rx.select(
                 models,
                 value="gpt-3.5-turbo-16k-0613",
-                placeholder="Select a model",
+                placeholder="Select an LLM model",
                 on_change=State.set_current_model,
             ),
         ),
         rx.divider(),
-        edit_area(),
+        rx.cond(State.show_edit, edit_area()),
         align_items="left",
         padding_left="2em",
     )
@@ -96,28 +106,36 @@ def output_area() -> rx.Component:
 
 def edit_area() -> rx.Component:
     return rx.card(
-        rx.vstack(
-            rx.badge("Is this parse correct?", color_scheme="green"),
-            rx.radio_group(["yes", "no"], on_change=State.set_correct_str),
-            rx.box(
-                rx.cond(
-                    State.is_wrong,
-                    rx.vstack(
-                        rx.input(placeholder="Your name"),
-                        rx.editable(
-                            rx.editable_preview(),
-                            rx.editable_input(),  
-                            placeholder=State.current_trade_parse,
-                            default_value=State.current_trade_parse,
-                            on_submit=State.set_current_trade_parse,
-                            start_with_edit_view=True,
-                            width="100%"),
-                    ),
+            rx.vstack(
+                rx.badge("Is this parse correct?", color_scheme="green"),
+                rx.radio_group(
+                    ["yes", "no"],
+                    on_change=State.set_correct_str,
+                    value=State.correct_str,
                 ),
-                width="100%",
+                rx.box(
+                    rx.cond(
+                        State.is_wrong,
+                        rx.vstack(
+                            rx.text(
+                                "Please provide a corrected parse along with your name"
+                            ),
+                            rx.input(placeholder="Your name", on_change=State.set_username),
+                            rx.editable(
+                                rx.editable_preview(),
+                                rx.editable_input(),
+                                placeholder=State.current_trade_parse,
+                                default_value=State.current_trade_parse,
+                                on_change=State.set_current_trade_parse,
+                                start_with_edit_view=True,
+                                width="100%",
+                            ),
+                        ),
+                    ),
+                    width="100%",
+                ),
+                rx.button("Save", on_click=State.save),
             ),
-            rx.button("Save"),
-        ),
         # header=rx.heading("🖋️ Verify the Parse", size="md"),
         padding_left="2em",
         padding_right="2em",
