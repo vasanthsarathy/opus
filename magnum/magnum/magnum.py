@@ -113,6 +113,7 @@ def edit_area() -> rx.Component:
                     on_change=State.set_correct_str,
                     value=State.correct_str,
                 ),
+                rx.input(placeholder="Your name", on_change=State.set_username),
                 rx.box(
                     rx.cond(
                         State.is_wrong,
@@ -120,7 +121,6 @@ def edit_area() -> rx.Component:
                             rx.text(
                                 "Please provide a corrected parse along with your name"
                             ),
-                            rx.input(placeholder="Your name", on_change=State.set_username),
                             rx.editable(
                                 rx.editable_preview(),
                                 rx.editable_input(),
@@ -135,6 +135,7 @@ def edit_area() -> rx.Component:
                     width="100%",
                 ),
                 rx.button("Save", on_click=State.save),
+                rx.cond(State.saved, rx.span("saved", color="green"))
             ),
         # header=rx.heading("🖋️ Verify the Parse", size="md"),
         padding_left="2em",
