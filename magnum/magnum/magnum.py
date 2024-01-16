@@ -113,7 +113,8 @@ def edit_area() -> rx.Component:
                     on_change=State.set_correct_str,
                     value=State.correct_str,
                 ),
-                rx.input(placeholder="Your name", on_change=State.set_username),
+                    rx.input(placeholder="Your name", 
+                             on_change=State.set_username),
                 rx.box(
                     rx.cond(
                         State.is_wrong,

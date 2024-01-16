@@ -138,6 +138,8 @@ class State(rx.State):
 
     def save(self):
         # update the smr 
+        if self.username == "":
+            self.username = "anonymous"
         if self.is_wrong:
             self.current_smr = self.compute_smr_from_trade()
         self.update_cache()
@@ -151,7 +153,8 @@ class State(rx.State):
         self.show_edit = not (self.show_edit)
 
     def save_cache_to_file(self):
-        filename = self.cache_input_file.replace(".jsonl", f"{dt.now().strftime(DATETIMEFORMAT)}")
+        # filename = self.cache_input_file.replace(".jsonl", f"{dt.now().strftime(DATETIMEFORMAT)}")
+        filename = self.cache_input_file
         with open(filename, "w") as f:
             json.dump(self.cache, f)
 
@@ -237,3 +240,12 @@ class State(rx.State):
 
     def to_pretty_smr(self):
         return json.dumps(self.current_smr, indent=2)
+    
+
+    """
+    To do  
+    - make sure to overright the master.jsonl file rather than add a new file 
+        - make sure that when you add new utterances that you can then retrieve it from cache
+    - add ARL utterances
+
+    """
