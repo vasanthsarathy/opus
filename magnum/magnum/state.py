@@ -244,8 +244,6 @@ class State(rx.State):
 
     """
     To do  
-    - make sure to overright the master.jsonl file rather than add a new file 
-        - make sure that when you add new utterances that you can then retrieve it from cache
     - add ARL utterances
 
     """
